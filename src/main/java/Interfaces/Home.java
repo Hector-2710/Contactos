@@ -15,6 +15,7 @@ public class Home extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(Home);
         pack();
+        setSize(300, 300);
         setLocationRelativeTo(null);
         setVisible(true);
         mostrarButton.addActionListener(this);
@@ -25,13 +26,19 @@ public class Home extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == mostrarButton) {
+            this.setVisible(false);
+            new mostrar();
 
         } else if (e.getSource() == agregarButton) {
             this.setVisible(false);
             new Add();
 
         } else if (e.getSource() == eliminarButton) {
+            this.setVisible(false);
+            new Remove();
         }
-    }
 
+
+    }
 }
+
