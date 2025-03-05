@@ -1,7 +1,5 @@
 package Interfaces;
-
 import Dominio.Contactos;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,8 +28,13 @@ public class Remove extends JFrame implements ActionListener {
         if (e.getSource() == deleteButton) {
             String name = ingresaNameTextField.getText();
             Contactos ct = new Contactos();
-            ct.removeContacto(name);
-            ingresaNameTextField.setText("eliminado");
+            Boolean estado = ct.removeContacto(name);
+            if (estado == true) {
+                ingresaNameTextField.setText("contacto eliminado");
+            } else {
+                ingresaNameTextField.setText("contacto no encontrado");
+
+            }
         } else if (e.getSource()== exitButton) {
 
             this.setVisible(false);

@@ -1,8 +1,8 @@
 package Dominio;
-import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.StyledEditorKit;
 
 public class Contactos {
     private ArrayList<Users> contactos;
@@ -18,34 +18,26 @@ public class Contactos {
         guardarContactos();
     }
 
-    public void removeContacto(String name) {
+    public boolean removeContacto(String name) {
         for (Users contacto : contactos) {
             if (contacto.getName().equals(name)) {
                 contactos.remove(contacto);
                 guardarContactos();
-                return;
+                return true;
             }
-        }
+            else {
+                return false;
+            }
+        }return false;
     }
 
-    public void mostrarContactos() {
-        if (contactos.isEmpty()) {
-        } else {
-            for (Users contacto : contactos) {
-                System.out.println(contacto);
-            }
-        }
-
-    }
     private void guardarContactos() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
             for (Users contacto : contactos) {
-                writer.write(contacto.toString()); // Escribe "nombre,numero"
+                writer.write(contacto.toString()); // Escribir el contacto en el archivo
                 writer.newLine();
             }
-            System.out.println("Contactos guardados correctamente.");
         } catch (IOException e) {
-            System.out.println("Error al guardar los contactos: " + e.getMessage());
         }
     }
 
@@ -63,9 +55,7 @@ public class Contactos {
                     contactos.add(new Users(nombre, numero));
                 }
             }
-            System.out.println("Contactos cargados correctamente.");
         } catch (IOException e) {
-            System.out.println("Error al cargar los contactos: " + e.getMessage());
         }
     }
     public static DefaultTableModel cargarContactosTabla() {
@@ -75,7 +65,6 @@ public class Contactos {
 
         File file = new File(FILE_NAME);
         if (!file.exists()) {
-            System.out.println("No se encontró el archivo de contactos.");
             return modeloTabla; // Retorna la tabla vacía si no hay archivo
         }
 
@@ -83,14 +72,12 @@ public class Contactos {
             String line;
             while ((line = reader.readLine()) != null) {
                 // Verificando cada línea leída
-                System.out.println("Leyendo línea: " + line);
                 String[] data = line.split(","); // Separa el nombre y número
                 if (data.length == 2) {
                     String nombre = data[0].trim(); // Elimina espacios en blanco antes y después del nombre
                     String numero = data[1].trim(); // Elimina espacios en blanco antes y después del número
                     modeloTabla.addRow(new Object[]{nombre, numero}); // Agregar fila a la tabla
                 } else {
-                    System.out.println("Formato incorrecto en línea: " + line); // Si no es correcto, muestra la línea
                 }
             }
         } catch (IOException e) {
@@ -100,7 +87,11 @@ public class Contactos {
         return modeloTabla;
     }
 
-
-
-
+    public static boolean numeroValido(String numero) {
+        if (numero.length() != 11) {
+            return false;
+        }else {
+            return true;
+        }
+    }
 }

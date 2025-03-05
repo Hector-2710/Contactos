@@ -1,7 +1,6 @@
 package Interfaces;
 import Dominio.Contactos;
 import Dominio.Users;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
@@ -34,12 +33,16 @@ public class Add extends JFrame implements ActionListener {
 
             String name = nombreTextField.getText();
             String numero = numeroTextField.getText();
-
             Users add = new Users(name,numero);
-
             Contactos ct = new Contactos();
-            ct.addContacto(add);
-            text.setText("contacto agregado");
+            boolean estado = ct.numeroValido(numero);
+
+            if (estado == true) {
+                ct.addContacto(add);
+                text.setText("contacto agregado");
+            } else {
+                text.setText("numero invalido");
+            }
 
         }
         else if (e.getSource() == exitButton){
